@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "51479334887",
+    "project_id": "p72024radwaneabdessamie",
+    "storage_bucket": "p72024radwaneabdessamie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51479334887:android:63140b2af5cbcbb6c77742",
+        "android_client_info": {
+          "package_name": "net.iessochoa.radwaneabdessamie.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJv9Pj4vXN-L-2eu0uvPDNL6Dk_Db4pOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

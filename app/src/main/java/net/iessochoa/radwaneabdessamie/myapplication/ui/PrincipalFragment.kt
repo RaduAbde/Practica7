@@ -1,4 +1,4 @@
-package net.iessochoa.radwaneabdessamie.myapplication
+package net.iessochoa.radwaneabdessamie.myapplication.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import net.iessochoa.radwaneabdessamie.myapplication.R
 import net.iessochoa.radwaneabdessamie.myapplication.databinding.FragmentFirstBinding
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class PrincipalFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
 

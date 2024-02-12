@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import net.iessochoa.radwaneabdessamie.myapplication.R
 import net.iessochoa.radwaneabdessamie.myapplication.databinding.FragmentFirstBinding
 
@@ -15,6 +16,7 @@ import net.iessochoa.radwaneabdessamie.myapplication.databinding.FragmentFirstBi
 class PrincipalFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
+    lateinit var auth:FirebaseAuth
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -32,11 +34,16 @@ class PrincipalFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        inicioUsuario()
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
     }
+
+    fun inicioUsuario(){
+        auth=FirebaseAuth.getInstance()
+        val userFireBase=auth.currentUser
+        binding.tvUsuario.text= "${userFireBase?.displayName} - ${userFireBase?.email}"
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

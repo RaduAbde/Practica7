@@ -7,4 +7,9 @@
         android:orderInCategory="100"
         android:title="@string/cerrar_sesi_n"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_datos_empresa"
+        android:orderInCategory="100"
+        android:title="@string/empresa"
+        app:showAsAction="never" />
 </menu>

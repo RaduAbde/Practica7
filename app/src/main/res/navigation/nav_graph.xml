@@ -18,8 +18,8 @@
     <fragment
         android:id="@+id/SecondFragment"
         android:name="net.iessochoa.radwaneabdessamie.myapplication.ui.DatosEmpresaFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:label="Datos Empresa"
+        tools:layout="@layout/fragment_datos_empresa">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"

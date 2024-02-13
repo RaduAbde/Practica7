@@ -48,14 +48,27 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this,InicioActivity::class.java))
     }
 
+    private fun abrirDatosEmpresa(){
+        findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.SecondFragment)
+
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> {cerrarSesion()
-                true}
+            R.id.action_settings -> {
+                cerrarSesion()
+                true
+            }
+
+            R.id.action_datos_empresa ->{
+                abrirDatosEmpresa()
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

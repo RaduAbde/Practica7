@@ -5,16 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import net.iessochoa.radwaneabdessamie.myapplication.R
-import net.iessochoa.radwaneabdessamie.myapplication.databinding.FragmentSecondBinding
+import net.iessochoa.radwaneabdessamie.myapplication.databinding.FragmentDatosEmpresaBinding
+
+import net.iessochoa.radwaneabdessamie.myapplication.model.Empresa
+import net.iessochoa.radwaneabdessamie.myapplication.viewmodel.AppViewModel
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class DatosEmpresaFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentDatosEmpresaBinding? = null
+    private val viewModel: AppViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,17 +30,23 @@ class DatosEmpresaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentDatosEmpresaBinding.inflate(inflater, container, false)
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        viewModel.obtenDatosEmpresa()
+        viewModel.datosEmpresaLiveData.observe(viewLifecycleOwner) { empresa ->
+            if (empresa != null) inicaDatosEmpresa(empresa)
         }
+    }
+
+    private fun inicaDatosEmpresa(empresa: Empresa){
+        binding.tvNombreEmpresa.text = empresa.nombre
+        binding.tvDireccionEmpresa.text = "Dirección: ${empresa.direccion}"
+        binding.tvNumeroEmpresa.text = "Numero: ${empresa.telefono}"
     }
 
     override fun onDestroyView() {

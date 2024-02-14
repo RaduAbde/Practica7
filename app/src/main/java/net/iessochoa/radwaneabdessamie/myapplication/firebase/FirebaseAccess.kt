@@ -1,14 +1,20 @@
 package net.iessochoa.radwaneabdessamie.myapplication.firebase
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
+import net.iessochoa.radwaneabdessamie.myapplication.model.Conferencia
 import net.iessochoa.radwaneabdessamie.myapplication.model.Empresa
 
 object FirebaseAccess {
     val TAG = "Practica7"
     //LiveData con los datos empresa
     private val datosEmpresaLiveData = MutableLiveData<Empresa?>()
+
+    //conferencias
+    private val listaConferencias = ArrayList<Conferencia>()
+    private val conferenciasLiveData = MutableLiveData<List<Conferencia>?>()
     /**
      * Permite buscar los datos de empresa en Firebase.
      * Realiza una sola lectura de un documento sin actualización en tiempo real
@@ -28,5 +34,33 @@ object FirebaseAccess {
     fun getDatosEmpresaLiveData(): LiveData<Empresa?> {
         return datosEmpresaLiveData
     }
+
+    fun getDatosConferencaLiveData(): LiveData<List<Conferencia>?>{
+        return conferenciasLiveData
+    }
+
+    fun buscaConferencias() {
+//Solo queremos una lectura. Si ya los hemos cargado no solicitamos los datos
+        if (listaConferencias.size == 0) {
+            val db = FirebaseFirestore.getInstance()
+            //inicamos la colección a buscar
+            db.collection(FirebaseContract.ConferenciaEntry.COLLECTION_CONFERENCIAS)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        //listaConferencias.clear()
+                        for (conferencia in task.result) {
+                            //obtenemos los objetos de clase Conferencia
+                            listaConferencias.add(conferencia.toObject(Conferencia::class.java))
+                            //actualizamos el LiveData
+                            conferenciasLiveData.postValue(listaConferencias)
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.exception)
+                    }
+                }
+        }
+    }
+
 
 }

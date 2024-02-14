@@ -8,4 +8,9 @@ object Repository {
 
     fun getDatosEmpresaLiveData()=FirebaseAccess.getDatosEmpresaLiveData()
 
+    //conferencias
+    fun getConferenciasLiveData()=FirebaseAccess.getDatosConferencaLiveData()
+
+    fun buscaConferencias()=FirebaseAccess.buscaConferencias()
+
 }

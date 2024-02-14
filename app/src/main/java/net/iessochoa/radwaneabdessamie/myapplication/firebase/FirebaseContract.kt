@@ -8,6 +8,18 @@ class FirebaseContract {
             val COLLECTION_EMPRESA= "empresas"
             //id del documento que necesitamos de los datos de la empresa
             val ID_DOC_PRINCIPAL_EMPRESA = "ochoa"
+
+
+        }
+    }
+
+    class ConferenciaEntry{
+        companion object{
+            //nombre de la colección
+            val COLLECTION_EMPRESA= "empresas"
+            //id del documento que necesitamos de los datos de la empresa
+            val ID_DOC_PRINCIPAL_EMPRESA = "ochoa"
+            val COLLECTION_CONFERENCIAS = "conferencias"
         }
     }
 

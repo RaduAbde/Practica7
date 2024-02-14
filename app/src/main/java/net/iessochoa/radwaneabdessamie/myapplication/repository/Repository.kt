@@ -13,4 +13,8 @@ object Repository {
 
     fun buscaConferencias()=FirebaseAccess.buscaConferencias()
 
+    fun getConferenciaIniciadaLiveData()=FirebaseAccess.getConferenciaIniciadaLiveData()
+
+    fun inciarConferenciaIniciada()=FirebaseAccess.iniciarConferenciaIniciada()
+
 }

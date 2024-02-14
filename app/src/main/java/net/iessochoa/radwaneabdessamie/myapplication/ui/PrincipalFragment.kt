@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import net.iessochoa.radwaneabdessamie.myapplication.R
@@ -42,11 +43,13 @@ class PrincipalFragment : Fragment() {
 
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inicioUsuario()
         iniciaSpinnerConferencia()
         iniciaIconoClick()
+        inciaTvConferencia()
 
     }
 
@@ -79,6 +82,16 @@ class PrincipalFragment : Fragment() {
             }
         }
         viewModel.buscaConferencias()
+    }
+
+    private fun inciaTvConferencia(){
+        viewModel.iniciarConferenicaIniciada()
+        viewModel.conferenciaIniciadaLiveData.observe(viewLifecycleOwner){conferencia ->
+            if (conferencia != null){
+                binding.tvConferencia.text ="Conferencia Iniciada: " + conferencia
+            }
+
+        }
     }
 
     private fun mostrarDatosConferencia(conferencia: Conferencia){

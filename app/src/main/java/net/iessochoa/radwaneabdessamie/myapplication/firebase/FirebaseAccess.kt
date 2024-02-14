@@ -15,6 +15,10 @@ object FirebaseAccess {
     //conferencias
     private val listaConferencias = ArrayList<Conferencia>()
     private val conferenciasLiveData = MutableLiveData<List<Conferencia>?>()
+
+    //confrencia iniciada
+    private val conferenciaIniciadaLiveData = MutableLiveData<String?>()
+
     /**
      * Permite buscar los datos de empresa en Firebase.
      * Realiza una sola lectura de un documento sin actualización en tiempo real
@@ -59,6 +63,35 @@ object FirebaseAccess {
                         Log.d(TAG, "Error getting documents: ", task.exception)
                     }
                 }
+        }
+    }
+
+    fun getConferenciaIniciadaLiveData():LiveData<String?>{
+        return conferenciaIniciadaLiveData
+    }
+
+
+    fun iniciarConferenciaIniciada() {
+        val db = FirebaseFirestore.getInstance()
+        //leemos el documento registrando la escucha
+        val docRef = db.collection(FirebaseContract.COLLECTION_CONF_INICIADA)
+            .document(FirebaseContract.ID_DOC_PRINCIPAL_CONF_INICIADA)
+        //cuando hay un cambio, se ejecuta el evento
+        docRef.addSnapshotListener {snapshot,e ->
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
+            if (snapshot != null && snapshot.exists()) {
+                //recuperamos el campo clave:valor
+                val conferenciaIniciada =
+                    snapshot.getString(FirebaseContract.CONF_INICIADA_CONFERENCIA)
+                //actualizamos el LiveData
+                conferenciaIniciadaLiveData.postValue(conferenciaIniciada)
+                Log.d(TAG, "Conferencia iniciada: " + snapshot.data)
+            } else {
+                Log.d(TAG, "Current data: null")
+            }
         }
     }
 

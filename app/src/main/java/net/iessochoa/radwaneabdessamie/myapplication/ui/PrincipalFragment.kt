@@ -177,6 +177,7 @@ class PrincipalFragment : Fragment() {
                 //vaciamos el editText
                 binding.etMensaje.text.clear()
             }
+
             (binding.rvMensajes.layoutManager as LinearLayoutManager).scrollToPosition(chat!!.size-1)
         }
 

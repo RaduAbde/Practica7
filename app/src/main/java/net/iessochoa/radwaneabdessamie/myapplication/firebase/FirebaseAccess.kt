@@ -3,9 +3,13 @@ package net.iessochoa.radwaneabdessamie.myapplication.firebase
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import net.iessochoa.radwaneabdessamie.myapplication.model.Conferencia
 import net.iessochoa.radwaneabdessamie.myapplication.model.Empresa
+import net.iessochoa.radwaneabdessamie.myapplication.model.Mensaje
 
 object FirebaseAccess {
     val TAG = "Practica7"
@@ -18,6 +22,58 @@ object FirebaseAccess {
 
     //confrencia iniciada
     private val conferenciaIniciadaLiveData = MutableLiveData<String?>()
+
+    private var chat = ArrayList<Mensaje>()
+    private val chatLiveData = MutableLiveData<List<Mensaje>?>()
+
+    private var registroChat:ListenerRegistration? = null
+
+    fun buscaChat(conferencia: String) {
+        //suponemos que cambiamos de Conferencia y leemos otra, por lo que
+        //vaciamos la lista con mensajes de otra conferencia
+        chat.clear()
+        //cerramos la conexión de otra conferencia si la hay
+        registroChat?.remove()
+        registroChat = FirebaseFirestore.getInstance()
+            //coleccion conferencias
+            .collection(FirebaseContract.ConferenciaEntry.COLLECTION_CONFERENCIAS)
+//documento: conferencia actual
+            .document(conferencia)
+//colección chat de la conferencia
+            .collection(FirebaseContract.COLLECTION_CHAT)
+//obtenemos la lista ordenada por fecha
+            .orderBy(
+                FirebaseContract.CHAT_FECHA_CREACION,
+                Query.Direction.ASCENDING
+            )//con el resultado
+            .addSnapshotListener() { snapshots, e ->
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e)
+                    return@addSnapshotListener
+                }
+                //creamos una lista con los mensajes nuevos añadidos
+                snapshots!!.documentChanges.forEach() {
+                    when (it.type) {
+                        //con los documentos añadidos, creamos la lista y actualizamos el LiveData
+                                DocumentChange.Type.ADDED -> {
+                            val mensaje = it.document.toObject(Mensaje::class.java)
+                            chat.add(mensaje)
+                            chatLiveData.postValue(chat)
+                        }
+                        //Si tenemos que actuar ante modificaciones o borrado
+                        DocumentChange.Type.MODIFIED -> {}
+                        DocumentChange.Type.REMOVED -> {}
+                    }
+                }
+            }
+    }
+
+    fun getChatLiveData():LiveData<List<Mensaje>?>
+    {
+        return chatLiveData
+    }
+
+
 
     /**
      * Permite buscar los datos de empresa en Firebase.
@@ -94,6 +150,19 @@ object FirebaseAccess {
             }
         }
     }
+
+    fun enviarMensajeChat(conferencia:String,mensaje: Mensaje) {
+        val db = FirebaseFirestore.getInstance()
+        //coleccion conferencia
+        db.collection(FirebaseContract.ConferenciaEntry.COLLECTION_CONFERENCIAS)
+            //Documento en el que añadimos el mensaje
+            .document(conferencia)
+            //subcolección
+            .collection(FirebaseContract.COLLECTION_CHAT) //añadimos el mensaje  nuevo
+            //añade documento, generando su id el sistema
+            .add(mensaje)
+    }
+
 
 
 }
